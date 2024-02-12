@@ -1,4 +1,4 @@
-import { Type } from "class-transformer";
+import { Type } from 'class-transformer';
 import {
   IsString,
   IsEmail,
@@ -6,13 +6,15 @@ import {
   IsDate,
   ValidateNested,
   IsNotEmptyObject,
-} from "class-validator";
-import { AddressDto } from "./address.dto";
-import { UploadFilesDto } from "./upload-files.dto";
+  MinLength,
+} from 'class-validator';
+import { AddressDto } from './address.dto';
+import { UploadFilesDto } from './upload-files.dto';
 
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
+  @MinLength(5)
   name: string;
 
   @IsEmail()

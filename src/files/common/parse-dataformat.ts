@@ -1,8 +1,8 @@
 // Import necessary modules and decorators from NestJS, class-transformer, and class-validator packages
-import { HttpException, HttpStatus } from "@nestjs/common";
-import { plainToInstance } from "class-transformer";
-import { validate } from "class-validator";
-import { CreateUserDto } from "../dto/create-user.dto"; // Adjust the import path as needed
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
+import { CreateUserDto } from '../dto/create-user.dto'; // Adjust the import path as needed
 
 // Define an asynchronous function that takes a string (expected to be JSON) and returns a promise of CreateUserDto
 export async function parseAndValidate(data: string): Promise<CreateUserDto> {
@@ -34,7 +34,7 @@ export async function parseAndValidate(data: string): Promise<CreateUserDto> {
       throw new HttpException(
         {
           message: validationMessages,
-          error: "Bad Request",
+          error: 'Bad Request',
           statusCode: HttpStatus.BAD_REQUEST,
         },
         HttpStatus.BAD_REQUEST,
@@ -50,8 +50,8 @@ export async function parseAndValidate(data: string): Promise<CreateUserDto> {
     // For any other errors (e.g., JSON parsing errors), throw an HttpException indicating invalid JSON data
     throw new HttpException(
       {
-        message: ["Invalid JSON data"],
-        error: "Bad Request",
+        message: ['Invalid JSON data'],
+        error: 'Bad Request',
         statusCode: HttpStatus.BAD_REQUEST,
       },
       HttpStatus.BAD_REQUEST,

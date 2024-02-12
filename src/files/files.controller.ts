@@ -7,17 +7,17 @@ import {
   BadRequestException,
   HttpException,
   HttpStatus,
-} from "@nestjs/common";
-import { FilesService } from "./files.service";
-import { FilesInterceptor } from "@nestjs/platform-express";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { plainToInstance } from "class-transformer";
-import { validate } from "class-validator";
-import { diskStorage } from "multer";
-import { filenamer } from "./helper/file-namer.helper"; // External helper function
-import { parseAndValidate } from "./common/parse-dataformat"; // External validation function
+} from '@nestjs/common';
+import { FilesService } from './files.service';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { CreateUserDto } from './dto/create-user.dto';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
+import { diskStorage } from 'multer';
+import { filenamer } from './helper/file-namer.helper'; // External helper function
+import { parseAndValidate } from './common/parse-dataformat'; // External validation function
 
-@Controller("files")
+@Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
@@ -28,18 +28,18 @@ export class FilesController {
    * - Separation of Concerns: Isolates specific functionalities (like file naming and data validation) from the controller logic, improving code maintenance and readability.
    * - Ease of Testing: External functions can be independently unit tested, ensuring reliability and reducing potential bugs in the controller logic.
    */
-  @Post("upload")
+  @Post('upload')
   @UseInterceptors(
-    FilesInterceptor("file", 3, {
+    FilesInterceptor('file', 3, {
       storage: diskStorage({
-        destination: "./static/images",
+        destination: './static/images',
         filename: filenamer, // External function for dynamic filename handling
       }),
     }),
   )
   async upload(
     @UploadedFiles() file: Express.Multer.File[],
-    @Body("data") data: string,
+    @Body('data') data: string,
   ) {
     let createUserDto: CreateUserDto;
     try {
@@ -50,7 +50,7 @@ export class FilesController {
         throw error;
       }
       // Handle other error types if necessary
-      throw new BadRequestException("Error processing your request");
+      throw new BadRequestException('Error processing your request');
     }
     return this.filesService.uploadFile(file, createUserDto);
   }
@@ -62,11 +62,11 @@ export class FilesController {
    * - Simplified Workflow: For simpler scenarios or when specific controller-level manipulations are needed, this approach can reduce the need for external utilities.
    * - Cohesion: When the parsing/validation logic is tightly coupled with the controller's specific needs, having it inline can improve the cohesion of the controller's code.
    */
-  @Post("up")
-  @UseInterceptors(FilesInterceptor("file"))
+  @Post('up')
+  @UseInterceptors(FilesInterceptor('file'))
   async uploadFile(
     @UploadedFiles() file: Express.Multer.File[],
-    @Body("data") data: string,
+    @Body('data') data: string,
   ) {
     let createUserDto: CreateUserDto;
     try {
@@ -80,7 +80,7 @@ export class FilesController {
         throw new HttpException(
           {
             message: validationMessages,
-            error: "Bad Request",
+            error: 'Bad Request',
             statusCode: HttpStatus.BAD_REQUEST,
           },
           HttpStatus.BAD_REQUEST,
@@ -92,8 +92,8 @@ export class FilesController {
       }
       throw new HttpException(
         {
-          message: ["Invalid JSON data"],
-          error: "Bad Request",
+          message: ['Invalid JSON data'],
+          error: 'Bad Request',
           statusCode: HttpStatus.BAD_REQUEST,
         },
         HttpStatus.BAD_REQUEST,
